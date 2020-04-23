@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Popcore.API.Logging;
 using Popcore.API.Models;
 using Popcore.API.Providers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Popcore.API.Middlewares
@@ -55,7 +50,7 @@ namespace Popcore.API.Middlewares
                     return false;
                 }
 
-                if(serviceHitCounter.Value == 3)
+                if (serviceHitCounter.Value == 3)
                 {
                     return true;
                 }
@@ -64,7 +59,7 @@ namespace Popcore.API.Middlewares
 
                 // updating the counter value
                 CreateOrUpdateCache("RequestCount", serviceHitCounter);
-         
+
                 return false;
             }
         }

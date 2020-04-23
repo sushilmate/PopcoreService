@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Popcore.API.Logging
+﻿namespace Popcore.API.Logging
 {
     public class LoggingMessages
     {

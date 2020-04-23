@@ -1,15 +1,15 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using AutoMapper;
-using Popcore.API.Services;
-using Popcore.API.Models;
-using Popcore.API.ThirdPartyProxyService;
-using Popcore.API.Providers;
 using Popcore.API.Middlewares;
+using Popcore.API.Models;
+using Popcore.API.Providers;
+using Popcore.API.Services;
+using Popcore.API.ThirdPartyProxyService;
 
 namespace PopcoreService
 {
@@ -35,7 +35,7 @@ namespace PopcoreService
 
             services.AddAutoMapper(typeof(Startup));
 
-            
+
             // Using memory cache objects to keep apis hit count in them
             services.AddMemoryCache();
 

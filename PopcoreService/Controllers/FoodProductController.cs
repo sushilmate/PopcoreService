@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Popcore.API.Models;
-using Popcore.API.ViewModels;
+using System.Threading.Tasks;
 
 namespace PopcoreService.Controllers
 {
@@ -24,15 +22,17 @@ namespace PopcoreService.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<FoodProductViewModel>> GetAync(string ingredient)
+        public async Task<IActionResult> GetAync(string ingredient)
         {
-            if(string.IsNullOrWhiteSpace(ingredient))
+            if (string.IsNullOrWhiteSpace(ingredient))
             {
-                return null;
+                return BadRequest("Input string ingredient is not valid");
             }
 
-            return await _foodProductService.GetFoodProducts(ingredient);
-            
+            var foodProducts = await _foodProductService.GetFoodProducts(ingredient);
+
+            return Ok(foodProducts);
+
             // mapper will map model to view model & client will get viewmodel from api.
             //return _mapper.Map<IEnumerable<Game>, IEnumerable<GameViewModel>>(games);
         }

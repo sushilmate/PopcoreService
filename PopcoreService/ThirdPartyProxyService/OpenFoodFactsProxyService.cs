@@ -23,9 +23,9 @@ namespace Popcore.API.ThirdPartyProxyService
         {
             string url = "https://us.openfoodfacts.org/cgi/search.pl?action=process&tagtype_0=categories&tag_contains_0=contains&tag_0=breakfast_cereals&tagtype_1=nutrition_grades&tag_contains_1=contains&tag_1=A&additives=without&ingredients_from_palm_oil=without&sort_by=unique_scans_n&page_size=20&download=on&format=csv";
 
-            using (var client = new WebClient())
+            using (WebClient client = new WebClient())
             {
-                var s = client.DownloadString(url);
+                var result = await client.DownloadStringTaskAsync(url);
             }
 
             if (!_cache.TryGetValue("PaginationCount", out CacheSetting paginationCounter))

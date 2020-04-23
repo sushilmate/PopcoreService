@@ -5,7 +5,7 @@ using System;
 namespace Popcore.API.Providers
 {
     public class CacheSettingProvider : ICacheSettingProvider
-    {       
+    {
         public CacheSetting CreateCacheSetting(int expiryInSeconds)
         {
             return new CacheSetting()
