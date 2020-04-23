@@ -4,12 +4,14 @@ using Microsoft.Extensions.Logging;
 using Popcore.API.Logging;
 using Popcore.API.Models;
 using Popcore.API.Providers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Popcore.API.Middlewares
 {
     public class ApiRateLimitMiddleware
     {
+        static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly RequestDelegate _next;
         private readonly object _syncLock = new object();
         private readonly IMemoryCache _cache;
@@ -31,7 +33,15 @@ namespace Popcore.API.Middlewares
                 _logger.LogWarning(LoggingMessages.Forbidden + context.User);
 
                 // waiting for 3 seconds to serve the request.
-                await Task.Delay(3000);
+                await semaphoreSlim.WaitAsync();
+                try
+                {
+                    await Task.Delay(3000);
+                }
+                finally
+                {
+                    semaphoreSlim.Release();
+                }
 
                 // reset to one as we wait for 3 seconds.
                 CreateOrUpdateCache("RequestCount", _cacheSettingProvider.CreateCacheSetting(int.MaxValue));
