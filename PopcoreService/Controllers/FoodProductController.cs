@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Popcore.API.Logging;
 using Popcore.API.Models;
 using System.Threading.Tasks;
 
@@ -24,9 +25,11 @@ namespace PopcoreService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAync(string ingredient)
         {
+            _logger.LogInformation(LoggingEvents.GetItem, LoggingMessages.GetAyncFoodProducts);
+
             if (string.IsNullOrWhiteSpace(ingredient))
             {
-                _logger.LogInformation("Bad Input");
+                _logger.LogInformation("Bad Input", LoggingMessages.GetAyncFoodProducts);
 
                 return BadRequest("Input string ingredient is not valid");
             }

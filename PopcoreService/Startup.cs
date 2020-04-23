@@ -38,6 +38,9 @@ namespace PopcoreService
             // Using memory cache objects to keep apis hit count in them
             services.AddMemoryCache();
 
+            // adding http client to make api calls to third party.
+            services.AddHttpClient();
+
             // Injecting dependancy in services so it can be accessible in classes.
             services.AddTransient<ICacheSettingProvider, CacheSettingProvider>();
 

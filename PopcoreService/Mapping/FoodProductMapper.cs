@@ -6,7 +6,7 @@ namespace Popcore.API.Mapping
     {
         public FoodProductMapper()
         {
-            // CreateMap<Game, GameViewModel>().ReverseMap();
+            // CreateMap<FoodProduct, FoodProductViewModel>().ReverseMap();
         }
     }
 }
