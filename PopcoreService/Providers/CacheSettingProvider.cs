@@ -24,14 +24,6 @@ namespace Popcore.API.Providers
             };
         }
 
-        //public CacheSetting CreateCacheSetting(CacheItemPriority cacheItemPriority)
-        //{
-        //    return new CacheSetting()
-        //    {
-        //        Value = 1
-        //    };
-        //}
-
         public MemoryCacheEntryOptions CreateMemoryCacheEntryOptions(CacheItemPriority cacheItemPriority, DateTime expiryDate)
         {
             return new MemoryCacheEntryOptions()
@@ -48,6 +40,5 @@ namespace Popcore.API.Providers
                 Priority = cacheItemPriority
             };
         }
-
     }
 }

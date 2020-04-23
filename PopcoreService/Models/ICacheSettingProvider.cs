@@ -8,11 +8,10 @@ namespace Popcore.API.Models
     {
         CacheSetting CreateCacheSetting(int expiryInSeconds);
 
-        //CacheSetting CreateCacheSetting(CacheItemPriority cacheItemPriority);
-
         MemoryCacheEntryOptions CreateMemoryCacheEntryOptions(CacheItemPriority cacheItemPriority, DateTime expiryDate);
 
         MemoryCacheEntryOptions CreateMemoryCacheEntryOptions(CacheItemPriority cacheItemPriority);
+        
         CacheSetting CreateCacheSetting(int expiryInSeconds, int intialValue);
     }
 }

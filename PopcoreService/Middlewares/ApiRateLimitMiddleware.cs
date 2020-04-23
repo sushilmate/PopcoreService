@@ -30,6 +30,7 @@ namespace Popcore.API.Middlewares
             {
                 _logger.LogWarning(LoggingMessages.Forbidden + context.User);
 
+                // waiting for 3 seconds to serve the request.
                 await Task.Delay(3000);
 
                 // reset to one as we wait for 3 seconds.
@@ -50,11 +51,13 @@ namespace Popcore.API.Middlewares
                     return false;
                 }
 
+                // we hit the counter need to wait for 3 seconds.
                 if (serviceHitCounter.Value == 3)
                 {
                     return true;
                 }
 
+                // increment the counter since its not crossed the threshold.
                 serviceHitCounter.Value++;
 
                 // updating the counter value

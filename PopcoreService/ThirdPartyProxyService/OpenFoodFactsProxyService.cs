@@ -25,15 +25,15 @@ namespace Popcore.API.ThirdPartyProxyService
             // not sure with web api url so used US food facts and search api.
             string url = string.Format("https://us.openfoodfacts.org/cgi/search.pl?action=process&tagtype_0=categories&tag_contains_0=contains&tag_0=breakfast_cereals&tagtype_1=ingredients&tag_contains_1=contains&tag_1={0}&additives=with&sort_by=unique_scans_n&page_size=20&axis_x=energy-kj&axis_y=products_n&download=on&format=csv", ingredient);
 
-            var foodProducts = new List<FoodProductViewModel>();
+            var foodProductsByIngredient = new List<FoodProductViewModel>();
 
             using (WebClient client = new WebClient())
             {
-                var result = await client.DownloadStringTaskAsync(url);
+                var allProductsDetails = await client.DownloadStringTaskAsync(url);
 
-                var resultOnNewLine = result.Split('\n');
-
-                var resultNew = resultOnNewLine[0].Split('\t');
+                var productDetails = allProductsDetails.Split('\n');
+                
+                var productColumns = productDetails[0].Split('\t');
 
                 var index = 0;
                 var productIndex = 0;
@@ -41,40 +41,44 @@ namespace Popcore.API.ThirdPartyProxyService
 
                 Dictionary<string, List<string>> foodDetails = new Dictionary<string, List<string>>();
 
-
-                foreach (var col in resultNew)
+                // this loop is to iterate with columns & find the indexes of products & ingredients
+                // considering the index might change in future so we our code will not break.
+                foreach (var col in productColumns)
                 {
-                    if (col == "product_name")
+                    switch (col)
                     {
-                        productIndex = index;
-                    }
-                    if (col == "ingredients_text")
-                    {
-                        ingredientIndex = index;
+                        case "product_name":
+                            productIndex = index;
+                            break;
+                        case "ingredients_text":
+                            ingredientIndex = index;
+                            break;
                     }
 
                     index++;
+
+                    //break the loop since we found our indexes.
                     if (productIndex != 0 && ingredientIndex != 0)
                         break;
                 }
 
-                foreach (var item in resultOnNewLine)
+                foreach (var product in productDetails.Skip(1))
                 {
-                    var data = item.Split('\t');
+                    var productData = product.Split('\t');
 
                     try
                     {
                         // check if we are accessing out of bound index from array
-                        if (data.Length < ingredientIndex)
+                        if (productData.Length < ingredientIndex)
                             continue;
 
-                        if (foodDetails.ContainsKey(data[productIndex]))
+                        if (foodDetails.ContainsKey(productData[productIndex]))
                         {
-                            foodDetails[data[productIndex]].Add(data[ingredientIndex]);
+                            foodDetails[productData[productIndex]].Add(productData[ingredientIndex]);
                         }
                         else
                         {
-                            foodDetails.Add(data[productIndex], new List<string>());
+                            foodDetails.Add(productData[productIndex], new List<string>());
                         }
                     }
                     catch (System.Exception ex)
@@ -84,7 +88,7 @@ namespace Popcore.API.ThirdPartyProxyService
                 }
                 foreach (var item in foodDetails)
                 {
-                    foodProducts.Add(new FoodProductViewModel() { ProductName = item.Key, Ingredients = item.Value.ToArray() });
+                    foodProductsByIngredient.Add(new FoodProductViewModel() { ProductName = item.Key, Ingredients = item.Value.ToArray() });
                 }
             }
 
@@ -96,12 +100,14 @@ namespace Popcore.API.ThirdPartyProxyService
                 paginationCounter = _cache.Get<CacheSetting>("PaginationCount");
             }
 
-            if (foodProducts.Count < paginationCounter.Value)
+            // this condition to reset the counter as we reached the end of food products.
+            if (foodProductsByIngredient.Count < paginationCounter.Value)
             {
                 paginationCounter.Value = 0;
             }
 
-            var foodToReturn = foodProducts.Skip(paginationCounter.Value).Take(5);
+            // skipping the already served foo products & taking only 5
+            var foodToReturn = foodProductsByIngredient.Skip(paginationCounter.Value).Take(5);
 
             // increment the pagination counter by 5
             paginationCounter.Value += 5;

@@ -26,6 +26,8 @@ namespace PopcoreService.Controllers
         {
             if (string.IsNullOrWhiteSpace(ingredient))
             {
+                _logger.LogInformation("Bad Input");
+
                 return BadRequest("Input string ingredient is not valid");
             }
 
@@ -34,7 +36,7 @@ namespace PopcoreService.Controllers
             return Ok(foodProducts);
 
             // mapper will map model to view model & client will get viewmodel from api.
-            //return _mapper.Map<IEnumerable<Game>, IEnumerable<GameViewModel>>(games);
+            //return _mapper.Map<IEnumerable<FoodProductModel>, IEnumerable<FoodProductViewModel>>(games);
         }
     }
 }

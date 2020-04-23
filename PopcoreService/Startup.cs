@@ -35,7 +35,6 @@ namespace PopcoreService
 
             services.AddAutoMapper(typeof(Startup));
 
-
             // Using memory cache objects to keep apis hit count in them
             services.AddMemoryCache();
 
@@ -44,7 +43,6 @@ namespace PopcoreService
 
             // services dependancy injections
             services.AddScoped<IFoodProductService, FoodProductService>();
-            services.AddScoped<IOpenFoodFactsProxyService, OpenFoodFactsProxyService>();
             services.AddScoped<IOpenFoodFactsProxyService, OpenFoodFactsProxyService>();
         }
 
