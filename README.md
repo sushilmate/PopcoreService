@@ -2,7 +2,7 @@
 
 This project has swagger enabled so you can access through https://localhost:44301/swagger/index.html
 
-I have also deployed this service on Azure cloud, you can access this API through https://popcoreservice.azurewebsites.net
+I have also deployed this service on Azure cloud, you can access this API through https://popcoreservice.azurewebsites.net/swagger/index.html
 
 ## Getting Started
 Use these instructions to get the project up and running.
