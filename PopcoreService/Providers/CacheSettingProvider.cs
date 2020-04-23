@@ -15,6 +15,15 @@ namespace Popcore.API.Providers
             };
         }
 
+        public CacheSetting CreateCacheSetting(int expiryInSeconds, int intialValue)
+        {
+            return new CacheSetting()
+            {
+                ExpiresAt = DateTime.Now.AddSeconds(expiryInSeconds),
+                Value = intialValue
+            };
+        }
+
         //public CacheSetting CreateCacheSetting(CacheItemPriority cacheItemPriority)
         //{
         //    return new CacheSetting()

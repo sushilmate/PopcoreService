@@ -13,5 +13,6 @@ namespace Popcore.API.Models
         MemoryCacheEntryOptions CreateMemoryCacheEntryOptions(CacheItemPriority cacheItemPriority, DateTime expiryDate);
 
         MemoryCacheEntryOptions CreateMemoryCacheEntryOptions(CacheItemPriority cacheItemPriority);
+        CacheSetting CreateCacheSetting(int expiryInSeconds, int intialValue);
     }
 }
