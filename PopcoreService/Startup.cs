@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
+using Popcore.API.Services;
+using Popcore.API.Models;
+using Popcore.API.ThirdPartyProxyService;
+using Popcore.API.Providers;
+using Popcore.API.Middlewares;
 
 namespace PopcoreService
 {
@@ -33,6 +32,20 @@ namespace PopcoreService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Popcore Service API", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(Startup));
+
+            
+            // Using memory cache objects to keep apis hit count in them
+            services.AddMemoryCache();
+
+            // Injecting dependancy in services so it can be accessible in classes.
+            services.AddTransient<ICacheSettingProvider, CacheSettingProvider>();
+
+            // services dependancy injections
+            services.AddScoped<IFoodProductService, FoodProductService>();
+            services.AddScoped<IOpenFoodFactsProxyService, OpenFoodFactsProxyService>();
+            services.AddScoped<IOpenFoodFactsProxyService, OpenFoodFactsProxyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +71,10 @@ namespace PopcoreService
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // we are using middleware in early stage of http pipeline so we can wait for the reuest and will not load
+            // many resources since its early in the pipeline stage.
+            app.UseApiRateLimitMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

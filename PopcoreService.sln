@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcoreService", "PopcoreService\PopcoreService.csproj", "{43A72DF9-B088-4349-B527-70EB1459C66E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Popcore.API", "PopcoreService\Popcore.API.csproj", "{43A72DF9-B088-4349-B527-70EB1459C66E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{3C325046-C6C2-4460-82C9-598AFD0B2DC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{546D399B-9FDA-47A9-8D6D-D1E3B8E72513}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C2C7AB19-2EF0-4E3C-8C96-4B88725170FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Popcore.API.UnitTests", "Popcore.API.UnitTests\Popcore.API.UnitTests.csproj", "{6ED41A0A-2746-42D1-97A2-28CCECD9D87B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +23,17 @@ Global
 		{43A72DF9-B088-4349-B527-70EB1459C66E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43A72DF9-B088-4349-B527-70EB1459C66E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43A72DF9-B088-4349-B527-70EB1459C66E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ED41A0A-2746-42D1-97A2-28CCECD9D87B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED41A0A-2746-42D1-97A2-28CCECD9D87B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED41A0A-2746-42D1-97A2-28CCECD9D87B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED41A0A-2746-42D1-97A2-28CCECD9D87B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{43A72DF9-B088-4349-B527-70EB1459C66E} = {546D399B-9FDA-47A9-8D6D-D1E3B8E72513}
+		{6ED41A0A-2746-42D1-97A2-28CCECD9D87B} = {C2C7AB19-2EF0-4E3C-8C96-4B88725170FF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B2B7147-3B6D-42E7-8B83-BFC4B8C3CDB3}
