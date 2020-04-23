@@ -1,10 +1,10 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Popcore.API.Mapping;
 using Popcore.API.Middlewares;
 using Popcore.API.Models;
 using Popcore.API.Providers;
@@ -33,7 +33,7 @@ namespace PopcoreService
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Popcore Service API", Version = "v1" });
             });
 
-            services.AddAutoMapper(typeof(Startup));
+            //services.AddAutoMapper(typeof(Startup));
 
             // Using memory cache objects to keep apis hit count in them
             services.AddMemoryCache();
@@ -47,6 +47,7 @@ namespace PopcoreService
             // services dependancy injections
             services.AddScoped<IFoodProductService, FoodProductService>();
             services.AddScoped<IOpenFoodFactsProxyService, OpenFoodFactsProxyService>();
+            services.AddScoped<ILocalMapper, FoodProductMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

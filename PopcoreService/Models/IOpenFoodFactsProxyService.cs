@@ -6,6 +6,6 @@ namespace Popcore.API.Models
 {
     public interface IOpenFoodFactsProxyService
     {
-        Task<IEnumerable<FoodProductViewModel>> GetFoodProducts(string ingredient);
+        Task<IEnumerable<ProductViewModel>> GetFoodProducts(string ingredient);
     }
 }

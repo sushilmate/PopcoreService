@@ -14,7 +14,7 @@ namespace Popcore.API.Services
             _openFoodFactsProxyService = openFoodFactsProxyService;
         }
 
-        public async Task<IEnumerable<FoodProductViewModel>> GetFoodProducts(string ingredient)
+        public async Task<IEnumerable<ProductViewModel>> GetFoodProducts(string ingredient)
         {
             return await _openFoodFactsProxyService.GetFoodProducts(ingredient);
         }

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Popcore.API.Logging;
 using Popcore.API.Models;
@@ -12,13 +11,11 @@ namespace PopcoreService.Controllers
     public class FoodProductController : ControllerBase
     {
         private readonly IFoodProductService _foodProductService;
-        private readonly IMapper _mapper;
         private readonly ILogger<FoodProductController> _logger;
 
-        public FoodProductController(IFoodProductService foodProductService, IMapper mapper, ILogger<FoodProductController> logger)
+        public FoodProductController(IFoodProductService foodProductService, ILogger<FoodProductController> logger)
         {
             _foodProductService = foodProductService;
-            _mapper = mapper;
             _logger = logger;
         }
 
