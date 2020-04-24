@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Popcore.API.Logging;
-using Popcore.API.Models;
+using Popcore.API.Domain.Services;
+using Popcore.API.Infrastructure.Logging;
 using System.Threading.Tasks;
 
 namespace PopcoreService.Controllers
@@ -20,7 +20,7 @@ namespace PopcoreService.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAync(string ingredient)
+        public async Task<IActionResult> SearchProductsByIngredientAync(string ingredient)
         {
             _logger.LogInformation(LoggingEvents.GetItem, LoggingMessages.GetAyncFoodProducts);
 
@@ -31,12 +31,9 @@ namespace PopcoreService.Controllers
                 return BadRequest("Input string ingredient is not valid");
             }
 
-            var foodProducts = await _foodProductService.GetFoodProducts(ingredient);
+            var foodProducts = await _foodProductService.SearchFoodProducts(ingredient);
 
             return Ok(foodProducts);
-
-            // mapper will map model to view model & client will get viewmodel from api.
-            //return _mapper.Map<IEnumerable<FoodProductModel>, IEnumerable<FoodProductViewModel>>(games);
         }
     }
 }

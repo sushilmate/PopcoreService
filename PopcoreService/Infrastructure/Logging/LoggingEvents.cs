@@ -1,4 +1,4 @@
-﻿namespace Popcore.API.Logging
+﻿namespace Popcore.API.Infrastructure.Logging
 {
     public class LoggingEvents
     {

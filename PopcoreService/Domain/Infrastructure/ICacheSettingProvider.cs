@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using Popcore.API.Providers;
+using Popcore.API.Infrastructure.Providers;
 using System;
 
-namespace Popcore.API.Models
+namespace Popcore.API.Domain.Infrastructure
 {
     public interface ICacheSettingProvider
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Popcore.API.Providers
+namespace Popcore.API.Infrastructure.Providers
 {
     public class CacheSetting
     {

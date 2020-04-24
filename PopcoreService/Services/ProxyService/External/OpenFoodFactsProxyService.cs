@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Popcore.API.Models;
-using Popcore.API.Models.Entities;
-using Popcore.API.Providers;
+using Popcore.API.Domain.Infrastructure;
+using Popcore.API.Domain.Models;
+using Popcore.API.Domain.Models.Search.External;
+using Popcore.API.Domain.Services;
+using Popcore.API.Infrastructure.Providers;
 using Popcore.API.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Popcore.API.ThirdPartyProxyService
+namespace Popcore.API.Services.ProxyService.External
 {
     public class OpenFoodFactsProxyService : IOpenFoodFactsProxyService
     {
@@ -19,23 +21,23 @@ namespace Popcore.API.ThirdPartyProxyService
         private readonly ILocalMapper _mapper;
         private readonly IMemoryCache _cache;
         private readonly ICacheSettingProvider _cacheSettingProvider;
+        private readonly IQueryBuilder _httpQueryBuilder;
         private readonly ILogger<OpenFoodFactsProxyService> _logger;
 
         public OpenFoodFactsProxyService(IHttpClientFactory clientFactory, ILocalMapper mapper,
-            IMemoryCache cache, ICacheSettingProvider cacheSettingProvider, ILogger<OpenFoodFactsProxyService> logger)
+            IMemoryCache cache, ICacheSettingProvider cacheSettingProvider, IQueryBuilder httpQueryBuilder, ILogger<OpenFoodFactsProxyService> logger)
         {
             _clientFactory = clientFactory;
             _mapper = mapper;
             _cache = cache;
             _cacheSettingProvider = cacheSettingProvider;
+            _httpQueryBuilder = httpQueryBuilder;
             _logger = logger;
         }
 
-        public async Task<IEnumerable<ProductViewModel>> GetFoodProducts(string ingredient)
+        public async Task<IEnumerable<ProductViewModel>> SearchFoodProducts(ProductSearchInput input)
         {
-            // not sure with web api url so used US food facts and search api.
-            string baseUrl = "https://us.openfoodfacts.org/cgi/search.pl?";
-            string url = string.Format("{0}action=process&tagtype_0=ingredients&tag_contains_0=contains&tag_0={1}&json=true", baseUrl, ingredient);
+            string url = _httpQueryBuilder.Build(input);
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
@@ -85,12 +87,6 @@ namespace Popcore.API.ThirdPartyProxyService
                 CreateOrUpdateCache("PaginationCount", paginationCounter);
 
                 return foodToReturn;
-            }
-            catch (OperationCanceledException ex)
-            {
-                //todo third party api is taking too much time.
-                _logger.LogError(ex.Message, request);
-                return Enumerable.Empty<ProductViewModel>();
             }
             catch (Exception ex)
             {

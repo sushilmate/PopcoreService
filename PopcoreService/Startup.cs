@@ -4,12 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Popcore.API.Mapping;
+using Popcore.API.Domain.Infrastructure;
+using Popcore.API.Domain.Services;
+using Popcore.API.Infrastructure.Mapping;
+using Popcore.API.Infrastructure.Providers;
 using Popcore.API.Middlewares;
-using Popcore.API.Models;
-using Popcore.API.Providers;
 using Popcore.API.Services;
-using Popcore.API.ThirdPartyProxyService;
+using Popcore.API.Services.ProxyService.External;
 
 namespace PopcoreService
 {
@@ -48,6 +49,7 @@ namespace PopcoreService
             services.AddScoped<IFoodProductService, FoodProductService>();
             services.AddScoped<IOpenFoodFactsProxyService, OpenFoodFactsProxyService>();
             services.AddScoped<ILocalMapper, FoodProductMapper>();
+            services.AddScoped<IQueryBuilder, HttpQueryBuilder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

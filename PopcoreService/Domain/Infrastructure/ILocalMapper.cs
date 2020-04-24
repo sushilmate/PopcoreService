@@ -1,8 +1,8 @@
-﻿using Popcore.API.Models.Entities;
+﻿using Popcore.API.Domain.Models;
 using Popcore.API.ViewModels;
 using System.Collections.Generic;
 
-namespace Popcore.API.Models
+namespace Popcore.API.Domain.Infrastructure
 {
     public interface ILocalMapper
     {

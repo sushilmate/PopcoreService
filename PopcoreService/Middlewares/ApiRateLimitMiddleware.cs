@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Popcore.API.Logging;
-using Popcore.API.Models;
-using Popcore.API.Providers;
+using Popcore.API.Domain.Infrastructure;
+using Popcore.API.Infrastructure.Logging;
+using Popcore.API.Infrastructure.Providers;
 using System.Threading;
 using System.Threading.Tasks;
 
