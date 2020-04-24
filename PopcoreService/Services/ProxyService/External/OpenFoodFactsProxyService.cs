@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Popcore.API.Domain.Infrastructure;
 using Popcore.API.Domain.Models;
@@ -18,13 +19,13 @@ namespace Popcore.API.Services.ProxyService.External
     public class OpenFoodFactsProxyService : IOpenFoodFactsProxyService
     {
         private readonly IHttpClientFactory _clientFactory;
-        private readonly ILocalMapper _mapper;
+        private readonly IMapper _mapper;
         private readonly IMemoryCache _cache;
         private readonly ICacheSettingProvider _cacheSettingProvider;
         private readonly IQueryBuilder _httpQueryBuilder;
         private readonly ILogger<OpenFoodFactsProxyService> _logger;
 
-        public OpenFoodFactsProxyService(IHttpClientFactory clientFactory, ILocalMapper mapper,
+        public OpenFoodFactsProxyService(IHttpClientFactory clientFactory, IMapper mapper,
             IMemoryCache cache, ICacheSettingProvider cacheSettingProvider, IQueryBuilder httpQueryBuilder, ILogger<OpenFoodFactsProxyService> logger)
         {
             _clientFactory = clientFactory;
@@ -61,7 +62,7 @@ namespace Popcore.API.Services.ProxyService.External
                 if (productDetails == null || productDetails.Products == null || productDetails.Products.Length == 0)
                     return Enumerable.Empty<ProductViewModel>();
 
-                var foodProductsByIngredient = _mapper.Map(productDetails.Products);
+                var foodProductsByIngredient = _mapper.Map<List<ProductViewModel>>(productDetails.Products);
 
                 if (!_cache.TryGetValue("PaginationCount", out CacheSetting paginationCounter))
                 {

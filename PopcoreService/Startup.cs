@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +8,6 @@ using Microsoft.OpenApi.Models;
 using Popcore.API.Domain.Infrastructure;
 using Popcore.API.Domain.Services;
 using Popcore.API.Infrastructure.Configuratiions;
-using Popcore.API.Infrastructure.Mapping;
 using Popcore.API.Infrastructure.Providers;
 using Popcore.API.Middlewares;
 using Popcore.API.Services;
@@ -38,7 +38,7 @@ namespace PopcoreService
             // loading configs in base url class as option pattern
             services.Configure<BaseUrlOptions>(Configuration.GetSection("BaseUrls"));
 
-            //services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(Startup));
 
             // Using memory cache objects to keep apis hit count in them
             services.AddMemoryCache();
@@ -52,7 +52,6 @@ namespace PopcoreService
             // services dependancy injections
             services.AddScoped<IFoodProductService, FoodProductService>();
             services.AddScoped<IOpenFoodFactsProxyService, OpenFoodFactsProxyService>();
-            services.AddScoped<ILocalMapper, FoodProductMapper>();
             services.AddScoped<IQueryBuilder, HttpQueryBuilder>();
         }
 
