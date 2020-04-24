@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Configuration;
 using Popcore.API.Domain.Infrastructure;
 using Popcore.API.Domain.Models.Search.External;
 
 namespace Popcore.API.Infrastructure.Providers
 {
-    public class HttpQueryBuilder: IQueryBuilder
+    public class HttpQueryBuilder : IQueryBuilder
     {
         private readonly IConfiguration _config;
 
@@ -15,13 +16,19 @@ namespace Popcore.API.Infrastructure.Providers
 
         public string Build(ProductSearchInput input)
         {
-            // not sure with web api url so used US food facts and search api.
-            string baseUrl = _config.GetSection("BaseUrls").GetSection("OpenFoodFacts").Value;
+            // ToDo we can convert this one into singlton so we dont have to read everytime
+            string baseUrl = _config.GetSection("BaseUrls").GetSection("UsOpenFoodFacts").Value;
 
-            string url = string.Format("{0}action=process&tagtype_0={1}&tag_contains_0=contains&tag_0={2}&json=true",
-                baseUrl, input.CriteriaType, input.CriteriaValue);
+            QueryBuilder builder = new QueryBuilder
+            {
+                { "action", "process" },
+                { "tagtype_0", input.CriteriaType },
+                { "tag_contains_0", input.CriteriaClause.ToString().ToLower() },
+                { "tag_0", input.CriteriaValue },
+                { "json", "true" }
+            };
 
-            return url;
+            return string.Format("{0}{1}", baseUrl, builder.ToQueryString());
         }
     }
 }
