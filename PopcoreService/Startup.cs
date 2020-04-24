@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Popcore.API.Domain.Infrastructure;
 using Popcore.API.Domain.Services;
+using Popcore.API.Infrastructure.Configuratiions;
 using Popcore.API.Infrastructure.Mapping;
 using Popcore.API.Infrastructure.Providers;
 using Popcore.API.Middlewares;
@@ -33,6 +34,9 @@ namespace PopcoreService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Popcore Service API", Version = "v1" });
             });
+
+            // loading configs in base url class as option pattern
+            services.Configure<BaseUrlOptions>(Configuration.GetSection("BaseUrls"));
 
             //services.AddAutoMapper(typeof(Startup));
 

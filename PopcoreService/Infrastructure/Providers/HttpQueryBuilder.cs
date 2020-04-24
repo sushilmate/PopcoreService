@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Popcore.API.Domain.Infrastructure;
 using Popcore.API.Domain.Models.Search.External;
+using Popcore.API.Infrastructure.Configuratiions;
 
 namespace Popcore.API.Infrastructure.Providers
 {
     public class HttpQueryBuilder : IQueryBuilder
     {
-        private readonly IConfiguration _config;
+        private readonly BaseUrlOptions _options;
 
-        public HttpQueryBuilder(IConfiguration config)
+        public HttpQueryBuilder(IOptions<BaseUrlOptions> options)
         {
-            _config = config;
+            _options = options.Value;
         }
 
         public string Build(ProductSearchInput input)
         {
-            // ToDo we can convert this one into singlton so we dont have to read everytime
-            string baseUrl = _config.GetSection("BaseUrls").GetSection("UsOpenFoodFacts").Value;
+            string baseUrl = _options.UsOpenFoodFacts;
 
             QueryBuilder builder = new QueryBuilder
             {
@@ -28,7 +28,7 @@ namespace Popcore.API.Infrastructure.Providers
                 { "json", "true" }
             };
 
-            return string.Format("{0}{1}", baseUrl, builder.ToQueryString());
+            return $"{baseUrl}{builder}";
         }
     }
 }

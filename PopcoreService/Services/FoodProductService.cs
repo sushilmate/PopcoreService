@@ -1,4 +1,5 @@
 ﻿using Popcore.API.Domain.Models.Search.External;
+using Popcore.API.Domain.Models.Type;
 using Popcore.API.Domain.Services;
 using Popcore.API.ViewModels;
 using System.Collections.Generic;
@@ -15,15 +16,10 @@ namespace Popcore.API.Services
             _openFoodFactsProxyService = openFoodFactsProxyService;
         }
 
-        public async Task<IEnumerable<ProductViewModel>> SearchFoodProducts(string searchTagValue, 
+        public async Task<IEnumerable<ProductViewModel>> SearchFoodProducts(string searchTagValue,
             string searchTagType = "ingredients", SearchClause searchClause = SearchClause.Contains)
         {
-            var searchInput = new ProductSearchInput
-            {
-                CriteriaType = searchTagType,
-                CriteriaClause = searchClause,
-                CriteriaValue = searchTagValue
-            };
+            var searchInput = new ProductSearchInput(searchTagType, searchClause, searchTagValue);
 
             return await _openFoodFactsProxyService.SearchFoodProducts(searchInput);
         }

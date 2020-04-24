@@ -1,4 +1,4 @@
-﻿using Popcore.API.Domain.Models.Search.External;
+﻿using Popcore.API.Domain.Models.Type;
 using Popcore.API.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
