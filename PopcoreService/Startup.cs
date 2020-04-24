@@ -5,13 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Popcore.API.Domain.Infrastructure;
-using Popcore.API.Domain.Services;
+using Popcore.API.Extensions;
 using Popcore.API.Infrastructure.Configuratiions;
-using Popcore.API.Infrastructure.Providers;
 using Popcore.API.Middlewares;
-using Popcore.API.Services;
-using Popcore.API.Services.ProxyService.External;
 
 namespace PopcoreService
 {
@@ -46,13 +42,9 @@ namespace PopcoreService
             // adding http client to make api calls to third party.
             services.AddHttpClient();
 
-            // Injecting dependancy in services so it can be accessible in classes.
-            services.AddTransient<ICacheSettingProvider, CacheSettingProvider>();
+            services.AddTransientServices();
 
-            // services dependancy injections
-            services.AddScoped<IFoodProductService, FoodProductService>();
-            services.AddScoped<IOpenFoodFactsProxyService, OpenFoodFactsProxyService>();
-            services.AddScoped<IQueryBuilder, HttpQueryBuilder>();
+            services.AddScopedServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
