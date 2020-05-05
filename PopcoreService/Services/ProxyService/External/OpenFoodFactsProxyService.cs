@@ -59,10 +59,8 @@ namespace Popcore.API.Services.ProxyService.External
                 var productDetails = JsonSerializer.Deserialize<FoodProductModel>(responseStream);
 
                 // validate if the product details is null or 0 or no products
-                if (productDetails == null || productDetails.Products == null || productDetails.Products.Length == 0)
+                if (!IsValid(productDetails))
                     return Enumerable.Empty<ProductViewModel>();
-
-                var foodProductsByIngredient = _mapper.Map<List<ProductViewModel>>(productDetails.Products);
 
                 if (!_cache.TryGetValue("PaginationCount", out CacheSetting paginationCounter))
                 {
@@ -73,13 +71,13 @@ namespace Popcore.API.Services.ProxyService.External
                 }
 
                 // this condition to reset the counter as we reached the end of food products.
-                if (foodProductsByIngredient.Count < paginationCounter.Value)
+                if (productDetails.Products.Length < paginationCounter.Value)
                 {
                     paginationCounter.Value = 0;
                 }
 
                 // skipping the already served foo products & taking only 5
-                var foodToReturn = foodProductsByIngredient.Skip(paginationCounter.Value).Take(5);
+                var foodToReturn = productDetails.Products.Skip(paginationCounter.Value).Take(5);
 
                 // increment the pagination counter by 5
                 paginationCounter.Value += 5;
@@ -87,14 +85,19 @@ namespace Popcore.API.Services.ProxyService.External
                 // updating the counter value
                 CreateOrUpdateCache("PaginationCount", paginationCounter);
 
-                return foodToReturn;
+                return _mapper.Map<List<ProductViewModel>>(foodToReturn);
             }
             catch (Exception ex)
             {
                 //todo third party api is taking too much time.
                 _logger.LogError(ex.Message, request);
-                return Enumerable.Empty<ProductViewModel>();
             }
+            return Enumerable.Empty<ProductViewModel>();
+        }
+
+        private bool IsValid(FoodProductModel productDetails)
+        {
+            return productDetails == null || productDetails.Products == null || productDetails.Products.Length == 0;
         }
 
         public void CreateOrUpdateCache(string cacheName, CacheSetting cacheSetting)

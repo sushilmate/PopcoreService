@@ -11,7 +11,7 @@ namespace Popcore.API.Middlewares
 {
     public class ApiRateLimitMiddleware
     {
-        static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
+        static readonly SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         private readonly RequestDelegate _next;
         private readonly object _syncLock = new object();
         private readonly IMemoryCache _cache;
@@ -28,7 +28,7 @@ namespace Popcore.API.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
-            if (IsRateLimitRequestRequired(context))
+            if (IsRateLimitRequestRequired())
             {
                 _logger.LogWarning(LoggingMessages.Forbidden + context.User);
 
@@ -49,7 +49,7 @@ namespace Popcore.API.Middlewares
             await _next.Invoke(context);
         }
 
-        private bool IsRateLimitRequestRequired(HttpContext context)
+        private bool IsRateLimitRequestRequired()
         {
             // lock to synchronise the multiple calls on web apis.
             lock (_syncLock)
